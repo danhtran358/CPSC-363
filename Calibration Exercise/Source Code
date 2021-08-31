@@ -1,0 +1,202 @@
+using System;
+using System.Collections.Generic;
+
+namespace CPSC363_CalibrationTask
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Create database of student name and goal for the first problem
+            var db = CreateDatabase();
+
+            // Prompt the user of the first problem
+            Console.WriteLine("This program gets a student name and output the course goal of the student.");
+
+            // Get first input for the name from the user
+            string name = GetName();
+
+            // Validate the input and print
+            // Keep going if not chosen to quit
+            while (name != "0")
+            {
+                // Print to the console the goal found
+                PrintGoal(name, db);
+                // Get a new input for the name
+                name = GetName();
+            }
+
+            // First problem ends, moving to the next
+            Console.WriteLine("-----------------");
+            Console.WriteLine("-----------------");
+            Console.WriteLine("-----------------");
+            Console.WriteLine();
+            Console.WriteLine();
+
+            // Inform the user of the new problem
+            Console.WriteLine("This program gets a week number and output the Monday's date of that week.");
+
+            // Get the week number from the user
+            int weekNumber = GetWeekNumber();
+
+            // Keep processing if not chosen to quit
+            while (weekNumber != 0)
+            {
+                // Print to the console the 
+                PrintMonday(weekNumber);
+                // Get a new input for the week number
+                weekNumber = GetWeekNumber();
+            }
+
+        }
+
+        private static void PrintMonday(int weekNumber)
+        {
+            // Get the Monday
+            var monday = GetMonday(weekNumber);
+
+            // If an appropriate Monday is found, print it, prompt error otherwise
+            if(monday != "")
+            {
+                Console.WriteLine($"Monday's date of Week {weekNumber} is {monday}");
+            }
+            else
+            {
+                Console.WriteLine($"There are less than {weekNumber} Mondays in 2021.");
+            }
+        }
+
+        // Get the Monday of the week specified
+        private static string GetMonday(int weekNumber)
+        {
+            string result = "";
+
+            // Get first Monday of 2021
+            DateTime firstMonday = GetFirstMonday();
+
+            // Add a number of week calculated from argument to get the result
+            var monday = firstMonday.AddDays((weekNumber - 1) * 7);
+
+            // Only accept Monday of 2021, empty string returned instead
+            if(monday.Year == 2021)
+            {
+                result = monday.ToShortDateString();
+            }
+            return result;
+        }
+
+        // Get the first Monday of year 2021
+        private static DateTime GetFirstMonday()
+        {
+            DateTime result = new DateTime(2021, 1, 1);
+
+            // Only stop and return the result if a Monday is found
+            while(result.DayOfWeek != DayOfWeek.Monday)
+            {
+                result = result.AddDays(1);
+            }
+            return result;
+        }
+
+        // Get week number from user input in console and do some validations
+        private static int GetWeekNumber()
+        {
+            bool done = false;
+            int result = -1;
+
+            while (!done)
+            {
+                // Prompt
+                Console.WriteLine("-----------------");
+                Console.Write("Enter the week number to show the Monday's date, 0 to end program: ");
+                var input = Console.ReadLine();
+
+                // Get input and do validation, only accept non-negative integers
+                if (!int.TryParse(input, out result))
+                {
+                    Console.WriteLine("The input is not an integer.");
+                }
+                else if (result < 0)
+                {
+                    Console.WriteLine("Negative number is not accepted.");
+                }
+                else
+                {
+                    done = true;
+                }
+            }
+
+            return result;
+        }
+
+        // Print the goal of the student determined by the name in the database passed
+        private static void PrintGoal(string name, Dictionary<string, string> db)
+        {
+            // 1 is the keyword to print all student's name for user to know
+            if(name == "1")
+            {
+                foreach (var item in db)
+                {
+                    Console.WriteLine(item.Key);
+                }
+            }
+            else
+            {
+                // find the student's name in the database and print the goal of the matching name
+                bool found = false;
+                foreach (var item in db)
+                {
+                    // compare names in lower case and print the match to console
+                    if (item.Key.ToLower().Equals(name.ToLower()))
+                    {
+                        found = true;
+                        Console.WriteLine($"{item.Key}'s goals:\n {item.Value}.");
+                        Console.WriteLine("------------------");
+                    }
+                }
+
+                // No student found by the name, prompt error
+                if (!found)
+                {
+                    Console.WriteLine($"No students in the class have the name of {name}.");
+                    Console.WriteLine("Please try again with a different name.");
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        // Prompt user and get input as a line from console
+        private static string GetName()
+        {
+            Console.WriteLine("-----------------");
+            Console.Write("Enter the student's name to show the goal, 1 to show all names, 0 to end program: ");
+            var name = Console.ReadLine();
+            return name;
+        }
+
+        // Initiate a database of student's goal using Dictionary structure
+        // Key is student's name
+        // Value is student's goal
+        private static Dictionary<string, string> CreateDatabase()
+        {
+            var db = new Dictionary<string, string>();
+
+            // data from CPSC 363 class, not exact
+            db.Add("David Beehler", "* Learn about SDLC\n * Which SDLC frameworks support which languages");
+            db.Add("Evan Callaghan", "* Learn which to use for the future\n * Soft skill e.g.teamwork, presentations");
+            db.Add("Josue Chigwira", "* Being able to write software\n * Learn sthg new about software dev");
+            db.Add("Morgan Gant", "* What has changd in 21 years\n * Learn about general problem - solving skills");
+            db.Add("Madeline Edmonds", "* improve teamwork, comms\n * learn how software dev relates to data science");
+            db.Add("Grant Gonnerman", "* Learn difference b / w different types of software dev\n * get along with everyone");
+            db.Add("Jacob Hillaker", "* Improve teamwork and comms skills\n * Can apply skills in class to interviews and jobs");
+            db.Add("Nick Jones", "* Learn to independently dev program\n* Apply self\n * Meet one other person");
+            db.Add("Gideon Kime", "* Understand how softdev is used in real life setting\n * how people come together to write software");
+            db.Add("Jackson Nguyen", "* be more comfortable on personal projects\n * Getting unblocked in problems");
+            db.Add("Craig Shaffer", "* be more confident in softdev\n * Better estimate task time");
+            db.Add("Danh Tran", "* Better at defining and breaking down tasks into subtasks\n * Not giving up when solving problems");
+            db.Add("Jacob Thomas", "* Using the skills\n * NOt being stressed");
+
+            return db;
+        }
+    }
+}
