@@ -8,4 +8,4 @@ https://grandview-edu.zoom.us/rec/share/JqNLjUAeI_qyTxMYrmsnOx74gjkqDp8yD44VCeEk
 2. Access the online compiler for C# at https://replit.com/languages/csharp
 3. Delete all the code on the left panel
 4. Paste the source code copied from step 1 onto the empty panel on the left
-5. Click Run button and follow the instruction on the concole on the right panel
+5. Click Run button and follow the instruction on the console on the right panel
